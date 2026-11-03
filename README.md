@@ -1,4 +1,4 @@
-# Symfony 7.4.10 form validation groups reproducer
+# Symfony 7.4 form validation groups reproducer
 
 Minimal Symfony application for reproducing a form validation issue with a
 dynamic `validation_groups` callable.
@@ -17,15 +17,15 @@ dynamic `validation_groups` callable.
 
 ## Versions
 
-The project is pinned to Symfony 7.4.10:
+The project is pinned to Symfony `7.4.14`:
 
-- `symfony/framework-bundle`: `7.4.10`
-- `symfony/validator`: `7.4.10`
-- `symfony/form`: `7.4.9`
+- `symfony/framework-bundle`: `7.4.14`
+- `symfony/validator`: `7.4.14`
+- `symfony/form`: `7.4.14`
 
-Symfony publishes component versions independently. `7.4.9` is the form
-component release that shipped with framework-bundle `7.4.10`; there is no
-`symfony/form` `7.4.10` release on Packagist.
+Other Symfony packages resolve to their latest available `7.4.x` release in
+`composer.lock`. `symfony/yaml` stays on `7.4.22` because `7.4.14` is blocked
+by a security advisory; it is not involved in the form validation behavior.
 
 ## Expected behavior
 
@@ -36,8 +36,8 @@ component release that shipped with framework-bundle `7.4.10`; there is no
 | `42` | `hello` | `with_number` | no errors |
 | `invalid` | empty | callable returns `[]` | expected: form invalid with a transformation error |
 
-The `invalid` case currently reproduces the bug: the `number` field has a
-`TransformationFailedException`, but the form reports no errors and
+The `invalid` case reproduces the bug on Symfony 7.4.14: the `number` field has
+a `TransformationFailedException`, but the form reports no errors and
 `isValid()` returns `true`. Because the failed transformation leaves the
 number's model data as `null`, the callable returns `[]`, and the form
 validator skips validation before it can add the transformation failure error.
