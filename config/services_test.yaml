@@ -1,0 +1,6 @@
+services:
+    # Keep the form factory reachable from KernelTestCase. In a normal web
+    # application it is used by the controller, so it would not be removed.
+    Symfony\Component\Form\FormFactoryInterface:
+        alias: form.factory
+        public: true
